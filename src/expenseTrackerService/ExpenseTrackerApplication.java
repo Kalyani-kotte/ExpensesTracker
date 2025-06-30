@@ -1,6 +1,9 @@
+
 package expenseTrackerService;
 
 import expenseTrackerService.Service.AddTransaction;
+import expenseTrackerService.Service.DeleteTransactions;
+import expenseTrackerService.Service.UpdateTransactions;
 import expenseTrackerService.Service.ViewTransaction;
 import lombok.RequiredArgsConstructor;
 
@@ -10,10 +13,10 @@ import java.util.Scanner;
 public class ExpenseTrackerApplication {
     public static void main(String[] args) {
         // Initialize service classes
-        expenseTrackerService.Service.AddTransaction addTransactions = new AddTransaction();
+        AddTransaction addTransactions = new AddTransaction();
         ViewTransaction viewTransactions = new ViewTransaction(addTransactions);
-      // UpdateTransactions updateTransactions = new UpdateTransactions(addTransactions);
-      // DeleteTransactions deleteTransactions = new DeleteTransactions(addTransactions);
+        UpdateTransactions updateTransactions = new UpdateTransactions(addTransactions.getTransactions());
+        DeleteTransactions deleteTransactions = new DeleteTransactions(viewTransactions);
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -26,7 +29,6 @@ public class ExpenseTrackerApplication {
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
-            // Read user input with error handling
             int choice;
             try {
                 choice = Integer.parseInt(scanner.nextLine().trim());
@@ -35,7 +37,6 @@ public class ExpenseTrackerApplication {
                 continue;
             }
 
-            // Process user choice
             switch (choice) {
                 case 1:
                     addTransactions.addTransaction();
@@ -43,13 +44,15 @@ public class ExpenseTrackerApplication {
                 case 2:
                     viewTransactions.displayTransactions();
                     break;
-               /* case 3:
+                case 3:
                     updateTransactions.updateTransaction();
                     break;
                 case 4:
-                    deleteTransactions.deleteTransaction();
-                    break;*/
-                case 3:
+                    System.out.print("Enter the UUID of the transaction to delete: ");
+                    String uuid = scanner.nextLine().trim();
+                    deleteTransactions.deleteTransaction(uuid);
+                    break;
+                case 5:
                     System.out.println("Exiting Expense Tracker. Goodbye!");
                     scanner.close();
                     return;

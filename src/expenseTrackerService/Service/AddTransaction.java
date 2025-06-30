@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 @Getter
 public class AddTransaction {
     private final List<Transaction> transactions = new ArrayList<>();
@@ -43,46 +44,7 @@ public class AddTransaction {
 
         System.out.println("Transaction added: " + transaction);
     }
-   public double getAmount(){
-        return getBalance();
-   }
-    public double getBalance() {
-        return transactions.stream()
-                .mapToDouble(t -> t.isIncome() ? t.getAmount() : -t.getAmount())
-                .sum();
-    }
-
-    public double getExpenses() {
-        return transactions.stream()
-                .filter(t -> !t.isIncome())
-                .mapToDouble(Transaction::getAmount)
-                .sum();
-    }
-    public void printExpenses() {
-        System.out.println("Added Expenses: " + getExpenses());
-    }
-    public double getIncome() {
-        return transactions.stream()
-                .filter(Transaction::isIncome)
-                .mapToDouble(Transaction::getAmount)
-                .sum();
-    }
-    public void printIncome() {
-        System.out.println("Added Income: " + getIncome());
-    }
-
-
-    public List<Transaction> getTransactions() {
-        return new ArrayList<>(transactions);
-    }
-
-    public Transaction findTransactionByUuid(String uuid) {
-        return transactions.stream()
-                .filter(t -> t.getUuid().equals(uuid))
-                .findFirst()
-                .orElse(null);
-    }
 
 
 
-    }
+}
